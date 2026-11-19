@@ -1,67 +1,120 @@
-# Template de démonstration
+# Fêtes des prénoms
 
-Ceci est la documentation utilisateur de l'intégration. Gladys ré-héberge ce
-fichier et affiche un lien **Documentation** permanent vers lui dans l'écran
-de configuration (dans la langue de l'utilisateur, avec l'anglais en repli) —
-c'est au moment de configurer que l'utilisateur en a le plus besoin. Gardez
-les courtes indications d'accueil dans les blocs `section` du `config_schema`
-du manifest ; mettez ici le pas-à-pas détaillé (captures d'écran, dépannage…).
+Les fêtes des prénoms de douze pays d'Europe dans Gladys : les prénoms fêtés
+aujourd'hui et demain, et un rappel le jour de la fête de votre famille et de
+vos amis. Allemagne, Autriche, Pologne, Suède, Tchéquie, Slovaquie, Hongrie,
+Danemark, Finlande, Estonie, Lettonie et Lituanie. Pour les fêtes du jour
+françaises, voir l'intégration **Fête du jour**.
 
-## Ce que vous obtenez
+## Ce qu'il faut
 
-Six appareils de démonstration apparaissent après l'installation : une
-station météo (vraies données Open-Meteo), un interrupteur, une lampe
-variable, une prise connectée avec mesure de puissance, un détecteur de
-mouvement et une caméra.
+Rien : les calendriers sont intégrés. Aucun compte, aucune connexion
+internet, rien ne sort de chez vous.
 
 ## Configuration
 
-1. Ouvrez l'onglet **Configuration** de l'intégration.
-2. Renseignez la **latitude** et la **longitude** que la station météo de
-   démonstration doit observer (Paris par défaut), et choisissez votre unité
-   de température. L'**intervalle de rafraîchissement** règle la fréquence
-   de lecture de la station météo et de la puissance de la prise : toutes
-   les 5 minutes par défaut, toutes les minutes au plus.
-3. Enregistrez : les appareils apparaissent dans l'onglet **Découverte**,
-   prêts à être ajoutés.
+### Pays
 
-Le réglage **Préférer la connexion locale** pilote la prise de
-démonstration : elle affiche en badge le canal réellement utilisé (local ou
-cloud), avec un point orange quand elle fonctionne en mode dégradé (local
-refusé, bascule cloud).
+Cochez les calendriers à suivre (Allemagne par défaut). Chaque pays donne un
+appareil, et les prénoms suivis sont cherchés dans tous.
 
-## Actions
+### Prénoms suivis
 
-- **Tester le fournisseur météo** — effectue une requête en direct vers
-  Open-Meteo et affiche la température et l'humidité actuelles sous le
-  bouton.
-- **Identifier un appareil** — choisissez un de vos appareils dans la liste
-  et il se signale (la lampe de démonstration « clignote » dans les logs).
+Écrivez les prénoms de votre famille et de vos amis, séparés par des
+virgules (20 au plus) : `Anna, Lukas, Zofia`. Majuscules et accents
+indifférents (`zofia`, `Žofia`). Un prénom est aussi trouvé dans une entrée
+composée (« Magdalena » dans « Maria Magdalena »). **Vérifier les prénoms
+suivis** donne la prochaine fête de chacun, et les prénoms absents des
+calendriers choisis.
 
-## Scènes
+### Langue
 
-L'intégration ajoute ses propres cartes à l'éditeur de scènes (Gladys 5.1
-ou plus récent), dans la catégorie **Intégrations** :
+La langue des noms des appareils et des fonctionnalités, des dates et des
+textes envoyés aux scènes (français par défaut). Gladys fixe les noms à
+l'ajout d'un appareil : pour les renommer après un changement, supprimez puis
+rajoutez l'appareil.
 
-- **Mouvement détecté** (déclencheur) — lance la scène quand un détecteur
-  de démonstration voit bouger quelque chose. Choisissez éventuellement le
-  détecteur et ce qui a bougé (personne, animal) ; laissés vides, toute
-  détection correspond. Les actions suivantes peuvent lire ce qui a bougé
-  avec `{{triggerEvent.data.target}}`.
-- **Identifier un appareil** (action) — fait se signaler l'appareil choisi.
-  Elle indique si l'appareil a pu se signaler, pour que les actions
-  suivantes puissent en dépendre.
+## Appareils
 
-## Tableau de bord
+Après l'enregistrement, ajoutez les appareils dans l'onglet **Découverte** :
 
-Ajoutez le widget **État de la démo** à un tableau de bord : il affiche en
-direct la température de la station météo et la puissance de la prise du
-bureau, la connexion utilisée par la prise (en orange si dégradée) et la
-position observée. Son bouton **Identifier la lampe** fait se signaler la
-lampe de démonstration.
+- **Fêtes des prénoms <pays>**, un par pays : **Aujourd'hui** et **Demain**,
+  les prénoms fêtés (tels qu'écrits dans le calendrier du pays).
+- **Fêtes des prénoms suivis**, si vous suivez des prénoms : **Fêtés
+  aujourd'hui** (les prénoms suivis fêtés ce jour, ou « Personne ») et
+  **Prochaine fête** (qui, quand, où : « Anna (Allemagne, Pologne) · lundi 26
+  juillet 2027, demain »).
+
+Les valeurs changent à minuit, dans le fuseau horaire de Gladys.
+
+## Widget du tableau de bord
+
+Le widget **Fêtes des prénoms** liste, par pays, les prénoms du jour et du
+lendemain (le jour seul au-delà de cinq pays, dix pays au plus, les autres
+nommés dessous ; une longue
+liste est coupée sur un prénom entier), puis les prochaines fêtes des
+prénoms suivis avec les jours restants. Ses réglages masquent le lendemain
+ou les prénoms suivis, et fixent le nombre de prénoms suivis affichés (1 à 8).
+
+## Déclencheurs de scène
+
+- **Fête d'un prénom suivi** : se déclenche le jour de la fête de chaque
+  prénom suivi, à l'heure choisie (8 h par défaut).
+- **Veille de la fête d'un prénom suivi** : se déclenche la veille, à l'heure
+  choisie (18 h par défaut) : le temps d'acheter des fleurs.
+
+Les deux ont un filtre **Prénom** facultatif : un des prénoms suivis, écrit
+comme dans la configuration ; vide, n'importe lequel. Un prénom fêté le même
+jour dans deux pays ne déclenche qu'une fois. La scène peut reprendre le
+prénom, les pays et la date dans ses messages.
+
+## Actions de scène
+
+- **Fêtes d'une date** : les prénoms fêtés dans un pays aujourd'hui, demain
+  ou jusqu'à 366 jours plus tard, pour un message ; aussi les prénoms suivis
+  fêtés ce jour-là et un oui/non (1 = oui, 0 = non) à tester avec une
+  « Condition sur variables ».
+- **Prochaine fête d'un prénom** : quand un prénom (ou une variable de scène)
+  est fêté la prochaine fois dans les pays choisis : la date, la date en
+  toutes lettres, les jours restants (-1 si le prénom n'est dans aucun
+  calendrier) et les pays.
+
+## Exemples de scènes
+
+- « Fête d'un prénom suivi » à 8 h → envoyer un message : « C'est la fête de
+  {prénom} aujourd'hui ({pays}) ».
+- Chaque matin à 7 h 30 → « Fêtes d'une date » (Allemagne, 0 jour) → envoyer
+  un message : « Aujourd'hui on fête {prénoms} ».
+
+## Actions de l'écran Configuration
+
+- **Chercher un prénom** : les jours où un prénom est fêté dans chaque pays
+  choisi, et la prochaine fête.
+- **Vérifier les prénoms suivis** : la prochaine fête de chaque prénom suivi,
+  et les prénoms absents des calendriers.
 
 ## Dépannage
 
-L'intégration journalise tout ce qu'elle fait : consultez les logs de
-l'intégration depuis l'interface Gladys (ou `docker logs` sur l'hôte) avec
-`LOG_LEVEL=debug` pour le détail complet.
+- Un prénom suivi n'est jamais fêté : lancez **Vérifier les prénoms suivis** ;
+  l'orthographe peut différer du calendrier du pays (Jakob, Jakub), ou le
+  prénom n'être fêté que dans un autre pays.
+- La scène ne part pas : vérifiez l'heure du déclencheur, et que le filtre
+  **Prénom** est écrit comme dans la configuration (ou vide).
+- Les journaux de l'intégration montrent son démarrage et les actions
+  lancées ; `LOG_LEVEL=debug` pour plus de détails.
+
+## Limites
+
+- Les calendriers viennent des données de nameday.abalin.net. Ils peuvent
+  différer de votre calendrier certains jours ; les fêtes légales et les
+  jours de saints qui y figurent sont écartés. Vos retours sont les bienvenus
+  sur le forum ou sur GitHub.
+- Les prénoms du 29 février ne sont fêtés que les années bissextiles.
+- Croatie, Italie, Espagne, Grèce, Bulgarie et Russie ne sont pas proposées :
+  leurs données y sont une liste de saints ou presque vides, et les fêtes
+  grecques dépendent souvent de Pâques.
+
+## Crédits
+
+Données des fêtes : [nameday-api](https://github.com/xnekv03/nameday-api) de
+xnekv03 (nameday.abalin.net), licence MIT.

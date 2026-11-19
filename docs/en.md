@@ -1,61 +1,115 @@
-# Demo Devices Template
+# Name Days
 
-This is the user documentation of the integration. Gladys re-hosts this file
-and shows a permanent **Documentation** link to it in the Configuration screen
-(in the user's language, with English as the fallback) — it is when
-configuring that the user needs it most. Keep the short onboarding hints in
-the `section` blocks of the manifest `config_schema`; put the long
-step-by-step (screenshots, troubleshooting…) here.
+The name days of twelve European countries in Gladys: the names celebrated
+today and tomorrow, and a reminder on the name day of your family and friends.
+Germany, Austria, Poland, Sweden, Czechia, Slovakia, Hungary, Denmark,
+Finland, Estonia, Latvia and Lithuania. For the French "fêtes du jour", see
+the integration **Fête du jour**.
 
-## What you get
+## What you need
 
-Six demo devices show up after installation: a weather station (real data
-from Open-Meteo), a switch, a dimmable light, a smart plug with power
-metering, a motion sensor and a camera.
+Nothing: the calendars are built into the integration. No account, no
+internet connection, nothing leaves your house.
 
 ## Configuration
 
-1. Open the **Configuration** tab of the integration.
-2. Set the **latitude** and **longitude** the demo weather station should
-   observe (they default to Paris), and pick your temperature unit.
-   The **refresh interval** sets how often the weather station and the
-   plug's power are read: every 5 minutes by default, every minute at most.
-3. Save: the devices appear in the **Discovery** tab, ready to be added.
+### Countries
 
-The **Prefer the local connection** toggle drives the demo plug: it reports
-the channel it actually uses as a badge (local or cloud), with an orange dot
-when it runs degraded (local refused, cloud fallback).
+Tick the calendars to follow (Germany by default). Each country gives a
+device, and the followed names are looked up in all of them.
 
-## Actions
+### Followed names
 
-- **Test the weather provider** — performs a live request to Open-Meteo and
-  shows the current temperature and humidity under the button.
-- **Identify a device** — pick one of your devices in the list and it will
-  signal itself (the demo light "blinks" in the logs).
+Write the first names of your family and friends, separated by commas (up to
+20): `Anna, Lukas, Zofia`. Case and accents do not matter (`zofia`, `Žofia`).
+A name is also found inside a compound entry ("Magdalena" in "Maria
+Magdalena"). Use **Check the followed names** to see the next name day of
+each, and the names that are in none of the chosen calendars.
 
-## Scenes
+### Language
 
-The integration adds its own cards to the scene editor (Gladys 5.1 or
-later), under the **Integrations** category:
+The language of the device and feature names, of the dates and of the texts
+sent to scenes (French by default). Gladys sets the names when a device is
+added: to rename them after a change, delete and add the device again.
 
-- **Motion detected** (trigger) — starts the scene when a demo motion sensor
-  sees something move. Optionally pick the sensor and what moved (person,
-  animal); left empty, any detection matches. The following actions can
-  read what moved with `{{triggerEvent.data.target}}`.
-- **Identify a device** (action) — makes the chosen device signal itself.
-  It returns whether the device could signal itself, so the following
-  actions can depend on it.
+## Devices
 
-## Dashboard
+After saving, add the devices in the **Discover** tab:
 
-Add the **Demo status** widget to a dashboard: it shows the live
-temperature of the weather station and the power of the office plug, the
-connection the plug currently uses (orange when degraded) and the observed
-location. Its **Identify the light** button makes the demo light signal
-itself.
+- **Name days <country>**, one per country: **Today** and **Tomorrow**, the
+  names celebrated (as written in the calendar of the country).
+- **Followed name days**, when you follow names: **Celebrated today** (the
+  followed names celebrated today, or "Nobody") and **Next name day** (who,
+  when, where: "Anna (Germany, Poland) · Monday 26 July 2027, tomorrow").
+
+The values change at midnight, in the time zone of Gladys.
+
+## Dashboard widget
+
+The **Name days** widget lists, per country, the names of today and tomorrow
+(today only beyond five countries, ten countries at most, the others
+named below; a long list is cut on a
+whole name), then the next name days of the followed names with the days
+left. Its settings hide tomorrow or the followed names, and set how many
+followed names are listed (1 to 8).
+
+## Scene triggers
+
+- **Name day of a followed name**: fires on the name day of each followed
+  name, at the chosen hour (08:00 by default).
+- **Day before a followed name day**: fires the day before, at the chosen
+  hour (18:00 by default): time to buy flowers.
+
+Both have an optional **First name** filter: one of the followed names,
+written as in the configuration; empty, any followed name. A name celebrated
+the same day in two countries fires once. The scene can use the first name,
+the countries and the date in its messages.
+
+## Scene actions
+
+- **Name days of a date**: the names celebrated in a country today, tomorrow
+  or up to 366 days ahead, for a message; also the followed names celebrated
+  that day and a yes/no (1 = yes, 0 = no) to test with "Condition on
+  variables".
+- **Next name day of a name**: when a first name (or a scene variable) is
+  next celebrated in the chosen countries: the date, the date in words, the
+  days left (-1 when the name is in no calendar) and the countries.
+
+## Scene examples
+
+- "Name day of a followed name" at 08:00 → send a message: "Today is the name
+  day of {name} ({countries})".
+- Every morning at 07:30 → "Name days of a date" (Germany, 0 days) → send a
+  message: "Today we celebrate {names}".
+
+## Actions of the Configuration screen
+
+- **Find a name**: the days a first name is celebrated in each chosen
+  country, and the next one.
+- **Check the followed names**: the next name day of each followed name, and
+  the names absent from the calendars.
 
 ## Troubleshooting
 
-The integration logs everything it does: check the integration logs from the
-Gladys UI (or `docker logs` on the host) with `LOG_LEVEL=debug` for the full
-detail.
+- A followed name is never celebrated: run **Check the followed names**; the
+  spelling may differ from the calendar of the country (Jakob, Jakub), or the
+  name may be celebrated in another country only.
+- The scene does not start: check the hour of the trigger, and that the
+  **First name** filter is written as in the configuration (or empty).
+- The logs of the integration show its start and the actions you run; set
+  `LOG_LEVEL=debug` for more.
+
+## Limits
+
+- The calendars come from the data of nameday.abalin.net. They may differ
+  from your own calendar on some days; holidays and saint days listed there
+  are left out. Feedback welcome on the forum or on GitHub.
+- February 29 names are celebrated in leap years only.
+- Croatia, Italy, Spain, Greece, Bulgaria and Russia are not offered: their
+  data there is a list of saints or mostly empty, and Greek name days often
+  depend on Easter.
+
+## Credits
+
+Name-day data: [nameday-api](https://github.com/xnekv03/nameday-api) by
+xnekv03 (nameday.abalin.net), MIT License.

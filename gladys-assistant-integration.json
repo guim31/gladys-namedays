@@ -1,177 +1,814 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "Name Days",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Name days of Germany, Austria, Poland, Sweden, Czechia and 7 more countries, with reminders.",
+    "fr": "Fêtes des prénoms d'Allemagne, Autriche, Pologne, Suède, Tchéquie et 7 autres pays, avec rappels.",
+    "de": "Namenstage aus Deutschland, Österreich, Polen, Schweden, Tschechien und 7 weiteren Ländern.",
+    "es": "Onomásticas de Alemania, Austria, Polonia, Suecia, Chequia y 7 países más, con recordatorios."
   },
   "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
-  "gladys_version": ">=5.1.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "docker_image": "ghcr.io/guim31/gladys-namedays:1.0.0",
+  "gladys_version": ">=5.3.0",
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-namedays/main/cover.png",
+  "categories": ["services"],
+  "countries": ["AT", "CZ", "DE", "DK", "EE", "FI", "HU", "LT", "LV", "PL", "SE", "SK"],
+  "keywords": [
+    "nameday",
+    "Namenstag",
+    "imieniny",
+    "namnsdag",
+    "svátek",
+    "névnap",
+    "nimipäivä",
+    "fête du prénom"
+  ],
+  "transports": ["local"],
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
-      "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+      "label": {
+        "en": "How it works",
+        "fr": "Fonctionnement",
+        "de": "So funktioniert es",
+        "es": "Funcionamiento"
       },
-      "links": [
+      "description": {
+        "en": "The name-day calendars are built into the integration: no account, no internet. After saving, add the devices in the Discover tab: one per country (names of today and tomorrow), and one for the followed names.",
+        "fr": "Les calendriers des fêtes sont intégrés : sans compte ni internet. Après l'enregistrement, ajoutez les appareils dans l'onglet Découverte : un par pays (prénoms du jour et du lendemain), et un pour les prénoms suivis.",
+        "de": "Die Namenstagskalender sind in die Integration eingebaut: ohne Konto, ohne Internet. Füge nach dem Speichern die Geräte im Tab „Entdecken“ hinzu: eins pro Land (Namen von heute und morgen) und eins für die verfolgten Namen.",
+        "es": "Los calendarios de onomásticas vienen integrados: sin cuenta ni internet. Después de guardar, añada los dispositivos en la pestaña Descubrir: uno por país (nombres de hoy y de mañana) y uno para los nombres seguidos."
+      }
+    },
+    {
+      "key": "countries",
+      "type": "multi_select",
+      "label": {
+        "en": "Countries",
+        "fr": "Pays",
+        "de": "Länder",
+        "es": "Países"
+      },
+      "description": {
+        "en": "The calendars to follow. France is not here: see the integration \"Fête du jour\".",
+        "fr": "Les calendriers à suivre. La France n'y est pas : voir l'intégration « Fête du jour ».",
+        "de": "Die zu verfolgenden Kalender. Frankreich fehlt: siehe die Integration „Fête du jour“.",
+        "es": "Los calendarios que seguir. Francia no está: vea la integración «Fête du jour»."
+      },
+      "required": true,
+      "default": ["de"],
+      "options": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "value": "at",
+          "label": {
+            "en": "Austria",
+            "fr": "Autriche",
+            "de": "Österreich",
+            "es": "Austria"
+          }
+        },
+        {
+          "value": "cz",
+          "label": {
+            "en": "Czechia",
+            "fr": "Tchéquie",
+            "de": "Tschechien",
+            "es": "Chequia"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "Germany",
+            "fr": "Allemagne",
+            "de": "Deutschland",
+            "es": "Alemania"
+          }
+        },
+        {
+          "value": "dk",
+          "label": {
+            "en": "Denmark",
+            "fr": "Danemark",
+            "de": "Dänemark",
+            "es": "Dinamarca"
+          }
+        },
+        {
+          "value": "ee",
+          "label": {
+            "en": "Estonia",
+            "fr": "Estonie",
+            "de": "Estland",
+            "es": "Estonia"
+          }
+        },
+        {
+          "value": "fi",
+          "label": {
+            "en": "Finland",
+            "fr": "Finlande",
+            "de": "Finnland",
+            "es": "Finlandia"
+          }
+        },
+        {
+          "value": "hu",
+          "label": {
+            "en": "Hungary",
+            "fr": "Hongrie",
+            "de": "Ungarn",
+            "es": "Hungría"
+          }
+        },
+        {
+          "value": "lt",
+          "label": {
+            "en": "Lithuania",
+            "fr": "Lituanie",
+            "de": "Litauen",
+            "es": "Lituania"
+          }
+        },
+        {
+          "value": "lv",
+          "label": {
+            "en": "Latvia",
+            "fr": "Lettonie",
+            "de": "Lettland",
+            "es": "Letonia"
+          }
+        },
+        {
+          "value": "pl",
+          "label": {
+            "en": "Poland",
+            "fr": "Pologne",
+            "de": "Polen",
+            "es": "Polonia"
+          }
+        },
+        {
+          "value": "se",
+          "label": {
+            "en": "Sweden",
+            "fr": "Suède",
+            "de": "Schweden",
+            "es": "Suecia"
+          }
+        },
+        {
+          "value": "sk",
+          "label": {
+            "en": "Slovakia",
+            "fr": "Slovaquie",
+            "de": "Slowakei",
+            "es": "Eslovaquia"
+          }
         }
       ]
     },
     {
-      "key": "latitude",
-      "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "key": "names",
+      "type": "string",
+      "label": {
+        "en": "Followed names",
+        "fr": "Prénoms suivis",
+        "de": "Verfolgte Namen",
+        "es": "Nombres seguidos"
       },
-      "placeholder": { "en": "e.g. 48.8566", "fr": "ex. 48.8566" },
-      "required": true,
-      "default": 48.8566,
-      "min": -90,
-      "max": 90
+      "description": {
+        "en": "Family and friends, separated by commas: their name days feed the \"Followed name days\" device, the widget and the scene triggers. Case and accents do not matter. Up to 20 names.",
+        "fr": "Famille et amis, séparés par des virgules : leurs fêtes alimentent l'appareil « Fêtes des prénoms suivis », le widget et les déclencheurs de scène. Majuscules et accents indifférents. 20 prénoms au plus.",
+        "de": "Familie und Freunde, durch Kommas getrennt: ihre Namenstage speisen das Gerät „Verfolgte Namenstage“, das Widget und die Szenenauslöser. Groß-/Kleinschreibung und Akzente egal. Bis zu 20 Namen.",
+        "es": "Familia y amigos, separados por comas: sus onomásticas alimentan el dispositivo «Onomásticas seguidas», el widget y los disparadores de escena. Mayúsculas y acentos indiferentes. Hasta 20 nombres."
+      },
+      "placeholder": {
+        "en": "Anna, Lukas, Zofia",
+        "fr": "Anna, Lukas, Zofia",
+        "de": "Anna, Lukas, Zofia",
+        "es": "Anna, Lukas, Zofia"
+      },
+      "required": false,
+      "default": ""
     },
     {
-      "key": "longitude",
-      "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
-      },
-      "placeholder": { "en": "e.g. 2.3522", "fr": "ex. 2.3522" },
-      "required": true,
-      "default": 2.3522,
-      "min": -180,
-      "max": 180
-    },
-    {
-      "key": "unit",
+      "key": "language",
       "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
-      ]
-    },
-    {
-      "key": "poll_frequency",
-      "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
+      },
       "description": {
-        "en": "How often sensors are polled, in seconds (one minute minimum).",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes (une minute minimum)."
+        "en": "Language of the device and feature names (set when the devices are added), of the dates and of the scene texts.",
+        "fr": "Langue des noms des appareils et fonctionnalités (figés à l'ajout des appareils), des dates et des textes des scènes.",
+        "de": "Sprache der Geräte- und Funktionsnamen (beim Hinzufügen der Geräte festgelegt), der Daten und der Szenentexte.",
+        "es": "Idioma de los nombres de los dispositivos y funciones (fijados al añadirlos), de las fechas y de los textos de las escenas."
       },
       "required": false,
-      "default": 300,
-      "min": 60,
-      "max": 3600
+      "default": "fr",
+      "options": [
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
+          }
+        }
+      ]
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
-    },
-    {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
+      "key": "find_name",
+      "label": {
+        "en": "Find a name",
+        "fr": "Chercher un prénom",
+        "de": "Namen suchen",
+        "es": "Buscar un nombre"
+      },
+      "description": {
+        "en": "Shows the days a first name is celebrated in the chosen countries, and the next one.",
+        "fr": "Affiche les jours où un prénom est fêté dans les pays choisis, et la prochaine fête.",
+        "de": "Zeigt die Tage, an denen ein Vorname in den gewählten Ländern gefeiert wird, und den nächsten.",
+        "es": "Muestra los días en que se celebra un nombre en los países elegidos, y el próximo."
+      },
+      "timeout_seconds": 10,
       "fields": [
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "First name",
+            "fr": "Prénom",
+            "de": "Vorname",
+            "es": "Nombre"
+          },
           "required": true
         }
       ]
+    },
+    {
+      "key": "check_names",
+      "label": {
+        "en": "Check the followed names",
+        "fr": "Vérifier les prénoms suivis",
+        "de": "Verfolgte Namen prüfen",
+        "es": "Comprobar los nombres seguidos"
+      },
+      "description": {
+        "en": "Lists the next name day of each followed name, and the names absent from the chosen calendars.",
+        "fr": "Liste la prochaine fête de chaque prénom suivi, et les prénoms absents des calendriers choisis.",
+        "de": "Listet den nächsten Namenstag jedes verfolgten Namens und die Namen, die in den Kalendern fehlen.",
+        "es": "Enumera la próxima onomástica de cada nombre seguido y los nombres ausentes de los calendarios."
+      },
+      "timeout_seconds": 10
     }
   ],
   "scene_triggers": [
     {
-      "key": "motion_detected",
-      "label": { "en": "Motion detected", "fr": "Mouvement détecté" },
+      "key": "followed_nameday",
+      "label": {
+        "en": "Name day of a followed name",
+        "fr": "Fête d'un prénom suivi",
+        "de": "Namenstag eines verfolgten Namens",
+        "es": "Onomástica de un nombre seguido"
+      },
       "description": {
-        "en": "A demo motion sensor saw a person or an animal move.",
-        "fr": "Un détecteur de démonstration a vu bouger une personne ou un animal."
+        "en": "Fires on the name day of each followed name, at the chosen hour: to send a reminder.",
+        "fr": "Se déclenche le jour de la fête de chaque prénom suivi, à l'heure choisie : pour envoyer un rappel.",
+        "de": "Löst am Namenstag jedes verfolgten Namens zur gewählten Uhrzeit aus: um eine Erinnerung zu senden.",
+        "es": "Se activa el día de la onomástica de cada nombre seguido, a la hora elegida: para enviar un recordatorio."
       },
       "fields": [
         {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Sensor", "fr": "Détecteur" }
+          "key": "hour",
+          "type": "number",
+          "label": {
+            "en": "Hour (0 to 23)",
+            "fr": "Heure (0 à 23)",
+            "de": "Stunde (0 bis 23)",
+            "es": "Hora (0 a 23)"
+          },
+          "description": {
+            "en": "The hour of the name day at which the scene runs.",
+            "fr": "L'heure du jour de la fête à laquelle la scène s'exécute.",
+            "de": "Die Uhrzeit des Namenstags, zu der die Szene läuft.",
+            "es": "La hora del día de la onomástica a la que se ejecuta la escena."
+          },
+          "required": true,
+          "default": 8,
+          "min": 0,
+          "max": 23
         },
         {
-          "key": "target",
-          "type": "multi_select",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" },
-          "options": [
-            { "value": "person", "label": { "en": "Person", "fr": "Personne" } },
-            { "value": "animal", "label": { "en": "Animal", "fr": "Animal" } }
-          ]
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "First name (optional)",
+            "fr": "Prénom (facultatif)",
+            "de": "Vorname (optional)",
+            "es": "Nombre (opcional)"
+          },
+          "description": {
+            "en": "One of the followed names, written as in the configuration. Empty: any followed name.",
+            "fr": "Un des prénoms suivis, écrit comme dans la configuration. Vide : n'importe lequel.",
+            "de": "Einer der verfolgten Namen, geschrieben wie in der Konfiguration. Leer: jeder verfolgte Name.",
+            "es": "Uno de los nombres seguidos, escrito como en la configuración. Vacío: cualquiera."
+          },
+          "required": false
         }
       ],
       "variables": [
         {
-          "key": "target",
+          "key": "name",
           "type": "string",
-          "label": { "en": "What moved", "fr": "Ce qui a bougé" }
+          "label": {
+            "en": "First name",
+            "fr": "Prénom",
+            "de": "Vorname",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "countries",
+          "type": "string",
+          "label": {
+            "en": "Countries",
+            "fr": "Pays",
+            "de": "Länder",
+            "es": "Países"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          }
+        }
+      ]
+    },
+    {
+      "key": "followed_nameday_eve",
+      "label": {
+        "en": "Day before a followed name day",
+        "fr": "Veille de la fête d'un prénom suivi",
+        "de": "Vortag eines verfolgten Namenstags",
+        "es": "Víspera de una onomástica seguida"
+      },
+      "description": {
+        "en": "Fires the day before the name day of each followed name, at the chosen hour: time to buy flowers.",
+        "fr": "Se déclenche la veille de la fête de chaque prénom suivi, à l'heure choisie : le temps d'acheter des fleurs.",
+        "de": "Löst am Vortag des Namenstags jedes verfolgten Namens zur gewählten Uhrzeit aus: Zeit, Blumen zu kaufen.",
+        "es": "Se activa la víspera de la onomástica de cada nombre seguido, a la hora elegida: a tiempo para comprar flores."
+      },
+      "fields": [
+        {
+          "key": "hour",
+          "type": "number",
+          "label": {
+            "en": "Hour (0 to 23)",
+            "fr": "Heure (0 à 23)",
+            "de": "Stunde (0 bis 23)",
+            "es": "Hora (0 a 23)"
+          },
+          "description": {
+            "en": "The hour of the day before at which the scene runs.",
+            "fr": "L'heure de la veille à laquelle la scène s'exécute.",
+            "de": "Die Uhrzeit des Vortags, zu der die Szene läuft.",
+            "es": "La hora de la víspera a la que se ejecuta la escena."
+          },
+          "required": true,
+          "default": 18,
+          "min": 0,
+          "max": 23
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "First name (optional)",
+            "fr": "Prénom (facultatif)",
+            "de": "Vorname (optional)",
+            "es": "Nombre (opcional)"
+          },
+          "description": {
+            "en": "One of the followed names, written as in the configuration. Empty: any followed name.",
+            "fr": "Un des prénoms suivis, écrit comme dans la configuration. Vide : n'importe lequel.",
+            "de": "Einer der verfolgten Namen, geschrieben wie in der Konfiguration. Leer: jeder verfolgte Name.",
+            "es": "Uno de los nombres seguidos, escrito como en la configuración. Vacío: cualquiera."
+          },
+          "required": false
+        }
+      ],
+      "variables": [
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "First name",
+            "fr": "Prénom",
+            "de": "Vorname",
+            "es": "Nombre"
+          }
+        },
+        {
+          "key": "countries",
+          "type": "string",
+          "label": {
+            "en": "Countries",
+            "fr": "Pays",
+            "de": "Länder",
+            "es": "Países"
+          }
+        },
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date",
+            "fr": "Date",
+            "de": "Datum",
+            "es": "Fecha"
+          }
         }
       ]
     }
   ],
   "scene_actions": [
     {
-      "key": "identify_device",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "description": {
-        "en": "Make a device signal itself (the demo light blinks).",
-        "fr": "Fait se signaler un appareil (la lampe de démonstration clignote)."
+      "key": "get_namedays",
+      "label": {
+        "en": "Name days of a date",
+        "fr": "Fêtes d'une date",
+        "de": "Namenstage eines Datums",
+        "es": "Onomásticas de una fecha"
       },
-      "timeout_seconds": 15,
+      "description": {
+        "en": "The names celebrated on a day in a country, for a message, and whether a followed name is among them (1 = yes, 0 = no).",
+        "fr": "Les prénoms fêtés un jour dans un pays, pour un message, et si un prénom suivi en fait partie (1 = oui, 0 = non).",
+        "de": "Die an einem Tag in einem Land gefeierten Namen, für eine Nachricht, und ob ein verfolgter Name dabei ist (1 = ja, 0 = nein).",
+        "es": "Los nombres celebrados un día en un país, para un mensaje, y si hay un nombre seguido entre ellos (1 = sí, 0 = no)."
+      },
+      "timeout_seconds": 10,
       "fields": [
         {
-          "key": "device",
+          "key": "country",
           "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
+          "label": {
+            "en": "Country",
+            "fr": "Pays",
+            "de": "Land",
+            "es": "País"
+          },
+          "required": true,
+          "default": "de",
+          "options": [
+            {
+              "value": "at",
+              "label": {
+                "en": "Austria",
+                "fr": "Autriche",
+                "de": "Österreich",
+                "es": "Austria"
+              }
+            },
+            {
+              "value": "cz",
+              "label": {
+                "en": "Czechia",
+                "fr": "Tchéquie",
+                "de": "Tschechien",
+                "es": "Chequia"
+              }
+            },
+            {
+              "value": "de",
+              "label": {
+                "en": "Germany",
+                "fr": "Allemagne",
+                "de": "Deutschland",
+                "es": "Alemania"
+              }
+            },
+            {
+              "value": "dk",
+              "label": {
+                "en": "Denmark",
+                "fr": "Danemark",
+                "de": "Dänemark",
+                "es": "Dinamarca"
+              }
+            },
+            {
+              "value": "ee",
+              "label": {
+                "en": "Estonia",
+                "fr": "Estonie",
+                "de": "Estland",
+                "es": "Estonia"
+              }
+            },
+            {
+              "value": "fi",
+              "label": {
+                "en": "Finland",
+                "fr": "Finlande",
+                "de": "Finnland",
+                "es": "Finlandia"
+              }
+            },
+            {
+              "value": "hu",
+              "label": {
+                "en": "Hungary",
+                "fr": "Hongrie",
+                "de": "Ungarn",
+                "es": "Hungría"
+              }
+            },
+            {
+              "value": "lt",
+              "label": {
+                "en": "Lithuania",
+                "fr": "Lituanie",
+                "de": "Litauen",
+                "es": "Lituania"
+              }
+            },
+            {
+              "value": "lv",
+              "label": {
+                "en": "Latvia",
+                "fr": "Lettonie",
+                "de": "Lettland",
+                "es": "Letonia"
+              }
+            },
+            {
+              "value": "pl",
+              "label": {
+                "en": "Poland",
+                "fr": "Pologne",
+                "de": "Polen",
+                "es": "Polonia"
+              }
+            },
+            {
+              "value": "se",
+              "label": {
+                "en": "Sweden",
+                "fr": "Suède",
+                "de": "Schweden",
+                "es": "Suecia"
+              }
+            },
+            {
+              "value": "sk",
+              "label": {
+                "en": "Slovakia",
+                "fr": "Slovaquie",
+                "de": "Slowakei",
+                "es": "Eslovaquia"
+              }
+            }
+          ]
+        },
+        {
+          "key": "days_ahead",
+          "type": "number",
+          "label": {
+            "en": "In how many days",
+            "fr": "Dans combien de jours",
+            "de": "In wie vielen Tagen",
+            "es": "Dentro de cuántos días"
+          },
+          "description": {
+            "en": "0 = today, 1 = tomorrow, up to 366.",
+            "fr": "0 = aujourd'hui, 1 = demain, jusqu'à 366.",
+            "de": "0 = heute, 1 = morgen, bis 366.",
+            "es": "0 = hoy, 1 = mañana, hasta 366."
+          },
+          "required": true,
+          "default": 0,
+          "min": 0,
+          "max": 366
+        }
+      ],
+      "outputs": [
+        {
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date (YYYY-MM-DD)",
+            "fr": "Date (AAAA-MM-JJ)",
+            "de": "Datum (JJJJ-MM-TT)",
+            "es": "Fecha (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "names",
+          "type": "string",
+          "label": {
+            "en": "Names celebrated",
+            "fr": "Prénoms fêtés",
+            "de": "Gefeierte Namen",
+            "es": "Nombres celebrados"
+          }
+        },
+        {
+          "key": "followed",
+          "type": "string",
+          "label": {
+            "en": "Followed names celebrated (all countries)",
+            "fr": "Prénoms suivis fêtés (tous pays)",
+            "de": "Gefeierte verfolgte Namen (alle Länder)",
+            "es": "Nombres seguidos celebrados (todos los países)"
+          }
+        },
+        {
+          "key": "has_followed",
+          "type": "number",
+          "label": {
+            "en": "A followed name is celebrated (1 yes, 0 no)",
+            "fr": "Un prénom suivi est fêté (1 oui, 0 non)",
+            "de": "Ein verfolgter Name wird gefeiert (1 ja, 0 nein)",
+            "es": "Se celebra un nombre seguido (1 sí, 0 no)"
+          }
+        }
+      ]
+    },
+    {
+      "key": "next_nameday",
+      "label": {
+        "en": "Next name day of a name",
+        "fr": "Prochaine fête d'un prénom",
+        "de": "Nächster Namenstag eines Namens",
+        "es": "Próxima onomástica de un nombre"
+      },
+      "description": {
+        "en": "When a first name is next celebrated in the chosen countries (days: -1 when it is in no calendar).",
+        "fr": "Quand un prénom est fêté la prochaine fois dans les pays choisis (jours : -1 s'il n'est dans aucun calendrier).",
+        "de": "Wann ein Vorname in den gewählten Ländern das nächste Mal gefeiert wird (Tage: -1, wenn er in keinem Kalender steht).",
+        "es": "Cuándo se celebra la próxima vez un nombre en los países elegidos (días: -1 si no está en ningún calendario)."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "First name",
+            "fr": "Prénom",
+            "de": "Vorname",
+            "es": "Nombre"
+          },
           "required": true
         }
       ],
       "outputs": [
         {
-          "key": "signalled",
-          "type": "boolean",
-          "label": { "en": "Device signalled", "fr": "Appareil signalé" }
+          "key": "date",
+          "type": "string",
+          "label": {
+            "en": "Date (YYYY-MM-DD)",
+            "fr": "Date (AAAA-MM-JJ)",
+            "de": "Datum (JJJJ-MM-TT)",
+            "es": "Fecha (AAAA-MM-DD)"
+          }
+        },
+        {
+          "key": "date_text",
+          "type": "string",
+          "label": {
+            "en": "Date in words",
+            "fr": "Date en toutes lettres",
+            "de": "Datum ausgeschrieben",
+            "es": "Fecha en letras"
+          }
+        },
+        {
+          "key": "days",
+          "type": "number",
+          "label": {
+            "en": "Days left (0 = today)",
+            "fr": "Jours restants (0 = aujourd'hui)",
+            "de": "Verbleibende Tage (0 = heute)",
+            "es": "Días restantes (0 = hoy)"
+          }
+        },
+        {
+          "key": "countries",
+          "type": "string",
+          "label": {
+            "en": "Countries",
+            "fr": "Pays",
+            "de": "Länder",
+            "es": "Países"
+          }
         }
       ]
     }
   ],
   "widgets": [
     {
-      "key": "demo_status",
-      "label": { "en": "Demo status", "fr": "État de la démo" },
-      "description": {
-        "en": "Live temperature and plug power, plug connection and observed location.",
-        "fr": "Température et puissance en direct, connexion de la prise, position observée."
+      "key": "namedays",
+      "label": {
+        "en": "Name days",
+        "fr": "Fêtes des prénoms",
+        "de": "Namenstage",
+        "es": "Onomásticas"
       },
-      "icon": "activity",
-      "action_timeout_seconds": 15
+      "description": {
+        "en": "Names celebrated today and tomorrow per country, and the next name days of the followed names.",
+        "fr": "Prénoms fêtés aujourd'hui et demain par pays, et les prochaines fêtes des prénoms suivis.",
+        "de": "Heute und morgen gefeierte Namen pro Land und die nächsten Namenstage der verfolgten Namen.",
+        "es": "Nombres celebrados hoy y mañana por país, y las próximas onomásticas de los nombres seguidos."
+      },
+      "icon": "gift",
+      "settings": [
+        {
+          "key": "show_tomorrow",
+          "type": "boolean",
+          "label": {
+            "en": "Show tomorrow",
+            "fr": "Afficher demain",
+            "de": "Morgen anzeigen",
+            "es": "Mostrar mañana"
+          },
+          "required": false,
+          "default": true
+        },
+        {
+          "key": "show_followed",
+          "type": "boolean",
+          "label": {
+            "en": "Show the followed names",
+            "fr": "Afficher les prénoms suivis",
+            "de": "Verfolgte Namen anzeigen",
+            "es": "Mostrar los nombres seguidos"
+          },
+          "required": false,
+          "default": true
+        },
+        {
+          "key": "count",
+          "type": "number",
+          "label": {
+            "en": "Followed names listed",
+            "fr": "Prénoms suivis affichés",
+            "de": "Angezeigte verfolgte Namen",
+            "es": "Nombres seguidos mostrados"
+          },
+          "description": {
+            "en": "From 1 to 8.",
+            "fr": "De 1 à 8.",
+            "de": "Von 1 bis 8.",
+            "es": "De 1 a 8."
+          },
+          "required": false,
+          "default": 5,
+          "min": 1,
+          "max": 8
+        }
+      ]
     }
   ]
 }
