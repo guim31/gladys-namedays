@@ -30,6 +30,12 @@ Gladys before reporting a problem.
 
 In scope: the code of this repository and the Docker image it publishes.
 
+The integration has no secret and opens no connection besides the one to
+Gladys: the name-day calendars are part of the image. It keeps a single file
+in `/data`, `scheduler.json`, the last hour its scene triggers fired. The
+followed names are part of the configuration stored by Gladys.
+
 Out of scope: Gladys Assistant itself (see its
 [security policy](https://github.com/GladysAssistant/Gladys/security/policy)),
-and the third-party services and devices the integration talks to.
+and the upstream name-day data
+([nameday-api](https://github.com/xnekv03/nameday-api)).

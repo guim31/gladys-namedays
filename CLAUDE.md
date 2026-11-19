@@ -31,16 +31,24 @@ pushing.
 ## Architecture
 
 ```
-index.js                          SDK wiring only: handlers registered before connect()
-src/devices/index.js              registry of the device blueprints + dispatch helpers
-src/devices/<type>.js             one device type per file (buildDevice, onPoll, onSetValue...)
+index.js                          SDK wiring only: src/app.js registers the handlers before connect()
+src/app.js                        every SDK handler -> the service; "Find a name", "Check the followed names"
+src/service.js                    the clock (minute ticks): states at midnight, scene triggers per hour
+src/namedays.js                   the embedded calendars: names of a day, days of a name, next name day
+src/data/namedays.json            the data, built by scripts/build-data.mjs (do not edit by hand)
+src/device.js                     one device per country, one for the followed names, and their states
 src/scenes.js                     scene action handlers (manifest `scene_actions`)
-src/widgets.js                    dashboard widget handlers (manifest `widgets`)
+src/widgets.js                    dashboard widget handler (manifest `widgets`)
+src/i18n.js                       every text of the code, en/fr/de/es; country names via Intl
+src/dates.js                      'YYYY-MM-DD' arithmetic, local date and hour in a time zone
 src/config.js                     DEFAULT_CONFIG (mirrors the manifest defaults) + normalization
-src/weather.js                    example driver (Open-Meteo)
-gladys-assistant-integration.json manifest: name, config_schema, actions, image...
-docs/en.md, docs/fr.md            user documentation, re-hosted by Gladys (mandatory)
+src/store.js                      JSON files in /data (NAMEDAYS_DATA_DIR locally)
+src/failures.js                   repeated failures logged once (warn), their end once (info)
+scripts/build-data.mjs            nameday-api's namedays.json -> src/data/namedays.json, names only
+gladys-assistant-integration.json manifest: name, config_schema, actions, triggers, widget...
+docs/{en,fr,de,es}.md             user documentation, re-hosted by Gladys (en and fr mandatory)
 test/                             node --test, against the SDK's fake Gladys (integration-sdk/testing)
+test/fixtures/abalin/             real upstream entries, for the cleaning of scripts/build-data.mjs
 .github/scripts/release.mjs       release helpers (manifest bump, changelog), tested in test/
 ```
 
@@ -259,3 +267,29 @@ long, et sur un « Sie »/« Ihr… » de politesse en allemand. Le store exige 
 - Docs `en`, `fr`, `de`, `es` avec les mêmes sections.
 - Chauffe, ouverture, sécurité : ne rien rendre pilotable « comme un thermostat » ou par un assistant
   vocal quand une erreur serait dangereuse (leçon d'OctoPrint).
+
+## Pièges découverts sur cette intégration (Name Days)
+
+**Données (nameday-api, `json/namedays.json`, MIT)**
+
+- Le fichier amont n'est **pas du JSON strict** (virgules finales) : `build-data.mjs` les retire avant
+  `JSON.parse`. Il est épinglé à un commit (`source.commit` dans `src/data/namedays.json`).
+- Il mêle aux prénoms des **fériés** (« Nový rok », « Nyårsdagen », « Neujahr », « Christfest »), des
+  **jours de saints** avec titre (« Johannes B. », « Thomas Ap. », « Morten Bisp ») et des abréviations
+  coupées par les virgules (« u. », « v.P. », « 40 ») : listes `NOT_NAMES`, `FIXES` et `KEEP_AS_WRITTEN`
+  du script, figées par `test/namedays.test.js`. L'Autriche note les variantes entre parenthèses
+  (« Gabriel(a] », « K(C)lemens »).
+- Écartés : Croatie (calendrier de saints, 230 entrées à titre), Italie et Espagne (saints), Grèce et
+  Bulgarie (plus de la moitié des jours « n/a », fêtes grecques mobiles), Russie (« n/a » et une
+  phrase politique), France (sujet de Fête du jour de William-De71) et États-Unis (pas de tradition).
+- Le 29 février n'existe qu'en année bissextile ; `nextCelebration` saute aux années bissextiles.
+
+**Cœur Gladys et SDK (vérifié avec le SDK 0.16)**
+
+- **Un seul composant focal par widget** (`card-list`, `chart` ou `image`) : une deuxième `card-list`
+  est jetée par le budget (`validateWidgetContent` le signale). Les prénoms par pays passent donc par un
+  bloc `status` (10 lignes, valeur ≤ 40 caractères), la liste des prénoms suivis par la `card-list`.
+- Le type `calendar` (5.2.0) aurait mis les fêtes dans le calendrier de Gladys, mais il exclut les
+  appareils et il est par utilisateur : choix du type `device` (états, conditions et tableau de bord),
+  comme Holidays. Fête du jour (William-De71) a pris le type `calendar` pour la France.
+- `countries` et `keywords` dans le manifeste : `gladys_version >=5.3.0`.
