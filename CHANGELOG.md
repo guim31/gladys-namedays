@@ -10,6 +10,8 @@ the notes of the version's GitHub Release.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-19
+
 ### Added
 
 - The name days of Germany, Austria, Poland, Sweden, Czechia, Slovakia,
@@ -24,3 +26,6 @@ the notes of the version's GitHub Release.
 - A dashboard widget: today's and tomorrow's names per country, the next name
   days of the followed names.
 - Configuration actions: find a name, check the followed names.
+
+[Unreleased]: https://github.com/guim31/gladys-namedays/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/guim31/gladys-namedays/releases/tag/v1.0.0
