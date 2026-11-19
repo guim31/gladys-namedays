@@ -13,13 +13,16 @@ const DATA = JSON.parse(readFileSync(new URL('./data/namedays.json', import.meta
 /** The country codes of the data, lower case ('de', 'se'...). */
 export const COUNTRIES = Object.keys(DATA.countries);
 
-/** "Ábel", "ABEL " and "abel" are the same name: no case, no accents. */
+// Letters NFD does not split into a base letter and an accent.
+const FOLDED = { ł: 'l', ø: 'o', đ: 'd', ð: 'd', æ: 'ae', œ: 'oe', þ: 'th', ı: 'i', ß: 'ss' };
+
+/** "Ábel", "ABEL " and "abel" are the same name, "Łukasz" and "Lukasz" too. */
 export function normalizeName(name) {
   return String(name ?? '')
     .normalize('NFD')
     .replace(/\p{M}/gu, '')
-    .replace(/ß/g, 'ss')
     .toLowerCase()
+    .replace(/[łøđðæœþıß]/g, (letter) => FOLDED[letter])
     .replace(/\s+/g, ' ')
     .trim();
 }

@@ -282,11 +282,13 @@ test('the widget: valid content in every language, within the core budget', asyn
   const de = (await world.gladys.fake.widgetGet('namedays', { language: 'de' })).data.content;
   assert.deepEqual(
     de.components.map((c) => c.type),
-    ['status', 'card-list'],
+    ['status', 'text', 'card-list'],
   );
-  // Twelve countries: today only, the first ten.
+  // Twelve countries: today only, the first ten; the two others are named.
   const rows = de.components[0].items;
   assert.equal(rows.length, 10);
+  const caption = de.components.find((c) => c.type === 'text');
+  assert.equal(caption.text, 'Hier nicht angezeigt: Schweden, Slowakei (siehe ihre Geräte).');
   assert.deepEqual(rows[0], {
     label: 'Österreich · Heute',
     value: 'Jakobus, Thomas, Valentina',
@@ -299,7 +301,7 @@ test('the widget: valid content in every language, within the core budget', asyn
   for (const row of rows) {
     assert.ok(row.value.length <= 40 && row.label.length <= 40, row.value);
   }
-  const followed = de.components[1].items;
+  const followed = de.components[2].items;
   assert.equal(followed.length, 5);
   assert.deepEqual(followed[0].badge, { text: 'Heute', color: 'success' });
   assert.equal(followed[0].title, 'Jakob');
@@ -310,7 +312,29 @@ test('the widget: valid content in every language, within the core budget', asyn
       settings: { show_tomorrow: false, show_followed: false },
     })
   ).data.content;
-  assert.equal(reduced.components.length, 1);
+  assert.equal(reduced.components.length, 2);
+});
+
+test('a failed first start is retried on the next connection, clock included', async (t) => {
+  const world = await createWorld({ config: FAMILY, connect: false });
+  t.after(() => world.app.stop());
+  const original = world.gladys.publishDiscoveredDevices.bind(world.gladys);
+  let calls = 0;
+  t.mock.method(world.gladys, 'publishDiscoveredDevices', async (devices) => {
+    calls += 1;
+    if (calls === 1) {
+      throw new Error('Gladys is restarting');
+    }
+    return original(devices);
+  });
+  await world.gladys.connect();
+  assert.equal(world.gladys.fake.connectionStatus.connected, false);
+  assert.equal(world.service.lastSlot, null, 'the clock did not start');
+  await world.gladys.disconnect();
+  await world.gladys.connect();
+  assert.equal(world.gladys.fake.connectionStatus.connected, true);
+  assert.ok(world.service.lastSlot, 'the clock started');
+  assert.equal(world.gladys.fake.discoveredDevices.length, 4);
 });
 
 test('the widget shows tomorrow while the countries fit, and cuts long lists', async (t) => {

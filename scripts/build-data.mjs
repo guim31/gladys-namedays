@@ -23,6 +23,7 @@ const NOT_NAMES = {
   de: [
     'Abend',
     'Allerheiligen',
+    'Allerseelen',
     'Arbeiter',
     'Bekehrung.',
     'Christfest',
@@ -38,10 +39,17 @@ const NOT_NAMES = {
     'Märtyrer',
     'Neujahr',
     'Pauli',
+    'Petri', // "Petri Stuhlfeier", a feast
     'Schalttag',
     'Schutzengelfest',
+    'Stuhlfeier',
     'Verklärung',
+    'Julan', // a typo, "Julian" follows
   ],
+  // Truncated or garbled upstream tokens.
+  at: ['Pe'],
+  hu: ['Vu'],
+  lt: ['M-Stvydas'],
   dk: ['Allehelgensdag', 'Børnedag', 'Juledag', 'Nytårsdag', 'Syvsoverdag'],
   se: ['Allhelgonadagen', 'Juldagen', 'Kyndelsmässodagen', 'Nyårsdagen'],
 };

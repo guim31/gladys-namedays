@@ -50,7 +50,8 @@ Los valores cambian a medianoche, en la zona horaria de Gladys.
 ## Widget del panel
 
 El widget **Onomásticas** muestra, por país, los nombres de hoy y de mañana
-(solo hoy a partir de seis países, diez líneas como máximo; una lista larga
+(solo hoy a partir de seis países, diez países como máximo, los demás
+nombrados debajo; una lista larga
 se corta en un nombre entero), y luego las próximas onomásticas de los
 nombres seguidos con los días restantes. Sus ajustes ocultan mañana o los
 nombres seguidos, y fijan cuántos nombres seguidos se muestran (1 a 8).

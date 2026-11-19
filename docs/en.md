@@ -47,7 +47,8 @@ The values change at midnight, in the time zone of Gladys.
 ## Dashboard widget
 
 The **Name days** widget lists, per country, the names of today and tomorrow
-(today only beyond five countries, ten rows at most; a long list is cut on a
+(today only beyond five countries, ten countries at most, the others
+named below; a long list is cut on a
 whole name), then the next name days of the followed names with the days
 left. Its settings hide tomorrow or the followed names, and set how many
 followed names are listed (1 to 8).

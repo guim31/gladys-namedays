@@ -78,6 +78,7 @@ export const WIDGET_TEXT = {
     badgeTomorrow: 'Tomorrow',
     badgeDays: (days) => `In ${days} days`,
     noFollowed: 'No followed name: add some in the configuration of the integration.',
+    moreCountries: (countries) => `Not shown here: ${countries} (see their devices).`,
   },
   fr: {
     today: "Aujourd'hui",
@@ -86,6 +87,7 @@ export const WIDGET_TEXT = {
     badgeTomorrow: 'Demain',
     badgeDays: (days) => `Dans ${days} j`,
     noFollowed: "Aucun prénom suivi : ajoutez-en dans la configuration de l'intégration.",
+    moreCountries: (countries) => `Non affichés ici : ${countries} (voir leurs appareils).`,
   },
   de: {
     today: 'Heute',
@@ -94,6 +96,7 @@ export const WIDGET_TEXT = {
     badgeTomorrow: 'Morgen',
     badgeDays: (days) => `In ${days} Tagen`,
     noFollowed: 'Kein verfolgter Name: füge welche in der Konfiguration der Integration hinzu.',
+    moreCountries: (countries) => `Hier nicht angezeigt: ${countries} (siehe ihre Geräte).`,
   },
   es: {
     today: 'Hoy',
@@ -102,6 +105,7 @@ export const WIDGET_TEXT = {
     badgeTomorrow: 'Mañana',
     badgeDays: (days) => `En ${days} días`,
     noFollowed: 'Ningún nombre seguido: añada algunos en la configuración de la integración.',
+    moreCountries: (countries) => `No se muestran aquí: ${countries} (vea sus dispositivos).`,
   },
 };
 

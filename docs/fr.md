@@ -50,7 +50,8 @@ Les valeurs changent à minuit, dans le fuseau horaire de Gladys.
 ## Widget du tableau de bord
 
 Le widget **Fêtes des prénoms** liste, par pays, les prénoms du jour et du
-lendemain (le jour seul au-delà de cinq pays, dix lignes au plus ; une longue
+lendemain (le jour seul au-delà de cinq pays, dix pays au plus, les autres
+nommés dessous ; une longue
 liste est coupée sur un prénom entier), puis les prochaines fêtes des
 prénoms suivis avec les jours restants. Ses réglages masquent le lendemain
 ou les prénoms suivis, et fixent le nombre de prénoms suivis affichés (1 à 8).

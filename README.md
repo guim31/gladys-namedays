@@ -60,7 +60,8 @@ and [Spanish](docs/es.md).
 - Croatia, Italy, Spain, Greece, Bulgaria and Russia are not offered: the upstream data for them is a
   list of saints or mostly empty, and Greek name days often depend on Easter. France is covered by
   Fête du jour.
-- The widget shows ten rows at most: today and tomorrow up to five countries, today only beyond.
+- The widget shows ten rows at most: today and tomorrow up to five countries, today only beyond; the
+  11th and 12th countries are only named under the rows (their devices remain).
 
 ## Development
 

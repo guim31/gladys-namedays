@@ -50,7 +50,8 @@ Die Werte wechseln um Mitternacht, in der Zeitzone von Gladys.
 ## Dashboard-Widget
 
 Das Widget **Namenstage** zeigt pro Land die Namen von heute und morgen (ab
-sechs Ländern nur heute, höchstens zehn Zeilen; eine lange Liste wird bei
+sechs Ländern nur heute, höchstens zehn Länder, die übrigen
+darunter genannt; eine lange Liste wird bei
 einem ganzen Namen gekürzt), dann die nächsten Namenstage der verfolgten
 Namen mit den verbleibenden Tagen. Seine Einstellungen blenden morgen oder
 die verfolgten Namen aus und legen fest, wie viele verfolgte Namen angezeigt

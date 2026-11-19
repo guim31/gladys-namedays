@@ -163,6 +163,7 @@ test('the values, the widget and the action texts exist in every language', () =
       badgeTomorrow: MAX.badge,
       badgeDays: MAX.badge,
       noFollowed: MAX.caption,
+      moreCountries: MAX.caption,
     })[key];
   const renderWidget = (value) => (typeof value === 'function' ? value(400) : value);
   assert.deepEqual(tableProblems(WIDGET_TEXT, 'WIDGET_TEXT', widgetMax, renderWidget), []);

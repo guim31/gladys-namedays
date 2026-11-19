@@ -73,8 +73,10 @@ export function registerHandlers(gladys, options = {}) {
         await service.reconfigure(config);
         return;
       }
-      started = true;
+      // Only once start() succeeded: a failed start is retried on the next
+      // connection, or the clock (states at midnight, triggers) never runs.
       await service.start(config);
+      started = true;
     } catch (err) {
       logger.error('Initialization failed', err);
       await gladys.setConnectionStatus(false, INIT_FAILED).catch(() => {});

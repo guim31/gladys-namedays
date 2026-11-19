@@ -63,6 +63,19 @@ test('holidays, saint titles and abbreviations are not names', () => {
   ]);
   assert.deepEqual(cleanNames('lv', 'Visu neparasto un kalendāros neierakstīto vārdu diena'), []);
   assert.deepEqual(cleanNames('fi', 'n/a'), []);
+  assert.deepEqual(cleanNames('de', 'Isabella, Petri, Stuhlfeier, Pit'), ['Isabella', 'Pit']);
+  assert.deepEqual(cleanNames('de', 'Allerseelen, Angela'), ['Angela']);
+  assert.deepEqual(cleanNames('de', 'Adriana, Eusebius, Julan, Julian'), [
+    'Adriana',
+    'Eusebius',
+    'Julian',
+  ]);
+  assert.deepEqual(cleanNames('at', 'Eusebius, Julian, Pe'), ['Eusebius', 'Julian']);
+  assert.deepEqual(cleanNames('lt', 'Alfonsas, Liucile, M-Stvydas, Tanvile'), [
+    'Alfonsas',
+    'Liucile',
+    'Tanvile',
+  ]);
 });
 
 test('no embedded name is a holiday, an abbreviation or empty', () => {
@@ -96,6 +109,11 @@ test('names compare without case nor accents', () => {
   assert.equal(normalizeName('  ÁBEL '), 'abel');
   assert.equal(normalizeName('Grażyna'), 'grazyna');
   assert.equal(normalizeName('Jürgen'), 'jurgen');
+  // Letters that are not a base letter plus an accent.
+  assert.equal(normalizeName('Łukasz'), 'lukasz');
+  assert.equal(normalizeName('SØREN'), 'soren');
+  assert.deepEqual(daysOf('Lukasz', 'pl'), daysOf('Łukasz', 'pl'));
+  assert.ok(daysOf('Soren', 'dk').length > 0);
   assert.ok(isCelebrated('abel', 'hu', '2027-01-02'));
   assert.ok(isCelebrated('GRAZYNA', 'pl', '2027-07-26'));
   assert.ok(!isCelebrated('Anna', 'pl', '2027-07-27'));

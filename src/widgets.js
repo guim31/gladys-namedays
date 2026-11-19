@@ -73,6 +73,15 @@ export function buildContent(service, { settings = {}, language } = {}) {
     })),
   );
   components.push({ type: 'status', items: rows.slice(0, MAX_ROWS) });
+  // Eleven or twelve countries: the last ones are named, their devices remain.
+  const hidden = countries.slice(MAX_ROWS);
+  if (hidden.length > 0) {
+    components.push({
+      type: 'text',
+      variant: 'caption',
+      text: text.moreCountries(countryList(hidden, lang)),
+    });
+  }
 
   if (settings.show_followed !== false) {
     const count = clampCount(settings.count);
